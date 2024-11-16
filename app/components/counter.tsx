@@ -178,7 +178,7 @@ export default function Counter() {
       <div className="justify-center mx-auto mb-2 md:mb-10">
         <img
           className="h-24 md:h-32"
-          src="/public/logo-volleytip-vertical.png"
+          src="/logo-volleytip-vertical.png"
           alt="Volleytip Icon"
         />
       </div>
@@ -208,7 +208,7 @@ export default function Counter() {
             >
               <img
                 className="h-auto"
-                src="/public/volleytip-short.png"
+                src="/volleytip-short.png"
                 alt="Volleytip Icon"
               />
             </span>
@@ -283,7 +283,7 @@ export default function Counter() {
             >
               <img
                 className="h-auto"
-                src="/public/volleytip-short.png"
+                src="/volleytip-short.png"
                 alt="Volleytip Icon"
               />
             </span>
