@@ -122,7 +122,7 @@ export default function Counter() {
     }
   };
 
-  const handleReset = () => {
+  const handleReset = React.useCallback(() => {
     setIsReset(true);
     setVisitorCount(0);
     setLocalCount(0);
@@ -134,10 +134,11 @@ export default function Counter() {
     setStoredValues("localSetCount", 0);
     setStoredValues("visitorSetCount", 0);
     setStoredValues("setsFinished", []);
-  };
+    setTimeout(() => setIsReset(false), 0);
+  }, []);
 
   return (
-    <main className="flex flex-col justify-center  bg-purple-volleytip min-h-content h-screen">
+    <main className="flex flex-col justify-center  bg-purple-volleytip min-h-min h-screen">
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
@@ -175,9 +176,9 @@ export default function Counter() {
           )}
         </ModalContent>
       </Modal>
-      <div className="justify-center mx-auto mb-2 md:mb-10">
+      <div className="justify-center mx-auto">
         <img
-          className="h-24 md:h-32"
+          className="h-20 mt-2"
           src="/logo-volleytip-vertical.png"
           alt="Volleytip Icon"
         />
@@ -186,7 +187,7 @@ export default function Counter() {
         <div className="text-center min-w-min sm:w-[20%]">
           <Tooltip content="Máximo 8 caracteres">
             <input
-              className={`text-[#fff] bg-purple-volleytip block text-3xl sm:text-5xl border-none font-medium focus:outline-none text-center w-full
+              className={`text-[#fff] bg-purple-volleytip block text-2xl sm:text-4xl border-none font-medium focus:outline-none text-center w-full
              `}
               name={ETeam.VISITOR}
               defaultValue="Visitor"
@@ -194,7 +195,7 @@ export default function Counter() {
             />
           </Tooltip>
           <Button
-            className="bg-blue-volleytip text-purple-volleytip font-bold text-6xl md:text-8xl w-32 h-32 xs:w-44 xs:h-44 sm:w-52 sm:h-52 md:w-56 md:h-56 rounded-md relative"
+            className="bg-blue-volleytip text-purple-volleytip font-bold text-6xl md:text-7xl w-32 h-32 md:w-40 md:h-40 rounded-md relative"
             disableRipple
             onClick={() => {
               incrementCount(ETeam.VISITOR);
@@ -222,10 +223,10 @@ export default function Counter() {
           </div>
         </div>
 
-        <div className="text-center flex-col justify-center items-center mt-10 sm:mt-16">
+        <div className="text-center flex-col justify-center items-center mt-10 ">
           <div className="flex justify-center">
             <button
-              className="text-[#fff] bg-purple-volleytip font-bold text-4xl sm:text-5xl md:text-7xl w-9 sm:w-14 md:w-20 rounded-md shadow hover:bg-blue-600 transition duration-300"
+              className="text-[#fff] bg-purple-volleytip font-bold text-3xl sm:text-4xl md:text-5xl w-9 sm:w-14 md:w-20 rounded-md shadow hover:bg-blue-600 transition duration-300"
               onClick={() => {
                 setVisitorSetCount(visitorSetCount + 1);
                 setIsFinishedBefore(true);
@@ -237,7 +238,7 @@ export default function Counter() {
             </button>
 
             <button
-              className="text-[#fff] bg-purple-volleytip font-bold text-4xl sm:text-5xl md:text-7xl w-9 sm:w-14 md:w-20 rounded-md shadow hover:bg-blue-600 transition duration-300"
+              className="text-[#fff] bg-purple-volleytip font-bold text-3xl sm:text-4xl md:text-5xl w-9 sm:w-14 md:w-20 rounded-md shadow hover:bg-blue-600 transition duration-300"
               onClick={() => {
                 setLocalSetCount(localSetCount + 1);
                 setIsFinishedBefore(true);
@@ -261,7 +262,7 @@ export default function Counter() {
         <div className="text-center min-w-min sm:w-[20%]">
           <Tooltip content="Máximo 8 caracteres">
             <input
-              className={`text-[#fff] bg-purple-volleytip block text-3xl sm:text-5xl border-none font-medium focus:outline-none text-center w-full
+              className={`text-[#fff] bg-purple-volleytip block text-2xl sm:text-4xl border-none font-medium focus:outline-none text-center w-full
              `}
               name={ETeam.LOCAL}
               defaultValue="Local"
@@ -269,7 +270,7 @@ export default function Counter() {
             />
           </Tooltip>
           <Button
-            className="bg-blue-volleytip text-purple-volleytip font-bold text-6xl md:text-8xl w-32 h-32 xs:w-44 xs:h-44 sm:w-52 sm:h-52 md:w-56 md:h-56 rounded-md relative"
+            className="bg-blue-volleytip text-purple-volleytip font-bold text-6xl md:text-7xl w-32 h-32 md:w-40 md:h-40 rounded-md relative"
             disableRipple
             onClick={() => {
               incrementCount(ETeam.LOCAL);
@@ -298,7 +299,7 @@ export default function Counter() {
         </div>
       </div>
       <button
-        className="text-[#fff] w-auto p-2 border-2 h-fit mt-6 border-blue-volleytip rounded-md flex text-xl sm:text-3xl mx-auto"
+        className="text-[#fff] w-auto py-1 px-2 border-2 h-fit mt-1 mb-2 border-blue-volleytip rounded-md flex text-xl sm:text-2xl mx-auto"
         onClick={handleReset}
       >
         Reiniciar

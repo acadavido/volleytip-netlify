@@ -57,7 +57,7 @@ export function Actions({ setCount, isReset, team }: ActionsProps) {
 
   return (
     <>
-      <div className="flex justify-between mt-2 w-32 sm:w-52 md:w-56">
+      <div className="flex justify-between mt-2 w-32 md:w-40 ">
         <Button
           className="w-1/4 bg-transparent min-w-0 text-[#fff]"
           onClick={() =>
@@ -66,7 +66,7 @@ export function Actions({ setCount, isReset, team }: ActionsProps) {
         >
           <FontAwesomeIcon
             icon={faSquareMinus}
-            className="w-4 h-4 sm:w-6 sm:h-6 m-auto"
+            className="w-4 h-4 sm:w-5 sm:h-5 m-auto"
           />
         </Button>
 
@@ -78,7 +78,7 @@ export function Actions({ setCount, isReset, team }: ActionsProps) {
           <FontAwesomeIcon
             icon={faHourglass}
             color="white"
-            className="w-4 h-4 sm:w-6 sm:h-6 m-auto"
+            className="w-4 h-4 sm:w-5 sm:h-5 m-auto"
             onClick={() => {
               setIsTimerActive(true);
               setIsFirstTimerTriggered(true);
@@ -93,7 +93,7 @@ export function Actions({ setCount, isReset, team }: ActionsProps) {
           <FontAwesomeIcon
             icon={faHourglass}
             color="white"
-            className="w-4 h-4 sm:w-6 sm:h-6 m-auto"
+            className="w-4 h-4 sm:w-5 sm:h-5 m-auto"
             onClick={() => {
               setIsTimerActive(true);
               setIsSecondTimerTriggered(true);
