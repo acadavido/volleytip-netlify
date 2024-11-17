@@ -4,8 +4,8 @@ import Counter from "~/components/counter";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
+    { title: "Volleytip scorer" },
+    { name: "description", content: "Welcome to Volleytip!" },
   ];
 };
 
