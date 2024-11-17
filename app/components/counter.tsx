@@ -1,19 +1,11 @@
 import React from "react";
 import { useState } from "react";
 import { Set } from "../components/set";
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  useDisclosure,
-  Tooltip,
-} from "@nextui-org/react";
+import { Button, useDisclosure, Tooltip } from "@nextui-org/react";
 import { ETeam, SetDto } from "~/dtos/dtos";
 import { Actions } from "~/components/actions";
 import { getStoredValue, setStoredValues } from "~/utils/utils";
+import CustomModal from "./custom-modal";
 React.useLayoutEffect = React.useEffect;
 
 export default function Counter() {
@@ -35,7 +27,18 @@ export default function Counter() {
   const [teamWinnerFinishedBefore, setTeamWinnerFinishedBefore] =
     useState<ETeam>();
 
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const {
+    isOpen: isSetModalOpen,
+    onOpen: onSetModalOpen,
+    onOpenChange: onSetModalOpenChange,
+    onClose: onSetModalClose,
+  } = useDisclosure();
+  const {
+    isOpen: isResetModalOpen,
+    onOpen: onResetModalOpen,
+    onOpenChange: onResetModalOpenChange,
+    onClose: onResetModalClose,
+  } = useDisclosure();
 
   React.useEffect(() => {
     localCount !== 0 && setStoredValues("localCount", localCount);
@@ -69,7 +72,7 @@ export default function Counter() {
         setLastPressed(ETeam.VISITOR);
         setIsFinishedBefore(false);
         if (visitorCount >= 24 && visitorCount - localCount >= 1) {
-          onOpen();
+          onSetModalOpen();
         }
       }
     } else if (team === ETeam.LOCAL) {
@@ -81,7 +84,7 @@ export default function Counter() {
         setLastPressed(ETeam.LOCAL);
         setIsFinishedBefore(false);
         if (localCount >= 24 && localCount - visitorCount >= 1) {
-          onOpen();
+          onSetModalOpen();
         }
       }
     }
@@ -139,63 +142,45 @@ export default function Counter() {
 
   return (
     <main className="flex flex-col justify-center  bg-purple-volleytip min-h-min h-screen">
-      <Modal
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        isDismissable={false}
-        isKeyboardDismissDisabled={true}
-        hideCloseButton={true}
+      <CustomModal
+        isOpen={isSetModalOpen}
+        onClose={onSetModalClose}
+        onOpenChange={onSetModalOpenChange}
+        message={"¿Deseas confirmar que el set se terminó?"}
+        onConfirm={handleFinishedSet}
+        onCancel={handleNotFinishedSet}
+      />
+      <CustomModal
+        isOpen={isResetModalOpen}
+        onClose={onResetModalClose}
+        onOpenChange={onResetModalOpenChange}
+        message={"¿Deseas reiniciar el partido?"}
+        onConfirm={handleReset}
+      />
+      <img
+        className="h-7 fixed top-4 left-4"
+        src="/logo-volleytip-horizontal.png"
+        alt="Volleytip Icon"
+      />
+      <button
+        className="fixed  top-3 right-3 text-[#fff] w-auto py-1 px-2 border-2 h-fit mt-1 mb-2 border-blue-volleytip rounded-md flex text-xs mx-auto"
+        onClick={onResetModalOpen}
       >
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">
-                Confirmación
-              </ModalHeader>
-              <ModalBody>
-                <p>¿Deseas confirmar que el set se terminó?</p>
-              </ModalBody>
-              <ModalFooter>
-                <Button
-                  color="danger"
-                  variant="light"
-                  onPress={onClose}
-                  onClick={handleNotFinishedSet}
-                >
-                  No
-                </Button>
-                <Button
-                  onPress={onClose}
-                  onClick={handleFinishedSet}
-                  className="bg-purple-volleytip opacity-95 text-[#fff]"
-                >
-                  Sí
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
-      <div className="justify-center mx-auto">
-        <img
-          className="h-20 mt-2"
-          src="/logo-volleytip-vertical.png"
-          alt="Volleytip Icon"
-        />
-      </div>
-      <div className="flex justify-center h-fit">
+        Reiniciar
+      </button>
+      <div className="flex justify-center h-fit mt-10">
         <div className="text-center min-w-min sm:w-[20%]">
-          <Tooltip content="Máximo 8 caracteres">
+          <Tooltip content="Máximo 10 caracteres">
             <input
               className={`text-[#fff] bg-purple-volleytip block text-2xl sm:text-4xl border-none font-medium focus:outline-none text-center w-full
              `}
               name={ETeam.VISITOR}
               defaultValue="Visitor"
-              maxLength={8}
+              maxLength={10}
             />
           </Tooltip>
           <Button
-            className="bg-blue-volleytip text-purple-volleytip font-bold text-6xl md:text-7xl w-32 h-32 md:w-40 md:h-40 rounded-md relative"
+            className="bg-blue-volleytip text-purple-volleytip font-bold text-6xl md:text-7xl w-32 h-32 xs:w-48 xs:h-48 md:w-52 md:h-52 rounded-md relative"
             disableRipple
             onClick={() => {
               incrementCount(ETeam.VISITOR);
@@ -231,7 +216,7 @@ export default function Counter() {
                 setVisitorSetCount(visitorSetCount + 1);
                 setIsFinishedBefore(true);
                 setTeamWinnerFinishedBefore(ETeam.VISITOR);
-                onOpen();
+                onSetModalOpen();
               }}
             >
               {visitorSetCount}
@@ -243,7 +228,7 @@ export default function Counter() {
                 setLocalSetCount(localSetCount + 1);
                 setIsFinishedBefore(true);
                 setTeamWinnerFinishedBefore(ETeam.LOCAL);
-                onOpen();
+                onSetModalOpen();
               }}
             >
               {localSetCount}
@@ -260,17 +245,17 @@ export default function Counter() {
         </div>
 
         <div className="text-center min-w-min sm:w-[20%]">
-          <Tooltip content="Máximo 8 caracteres">
+          <Tooltip content="Máximo 10 caracteres">
             <input
               className={`text-[#fff] bg-purple-volleytip block text-2xl sm:text-4xl border-none font-medium focus:outline-none text-center w-full
              `}
               name={ETeam.LOCAL}
               defaultValue="Local"
-              maxLength={8}
+              maxLength={10}
             />
           </Tooltip>
           <Button
-            className="bg-blue-volleytip text-purple-volleytip font-bold text-6xl md:text-7xl w-32 h-32 md:w-40 md:h-40 rounded-md relative"
+            className="bg-blue-volleytip text-purple-volleytip font-bold text-6xl md:text-7xl w-32 h-32 xs:w-48 xs:h-48 md:w-52 md:h-52 rounded-md relative"
             disableRipple
             onClick={() => {
               incrementCount(ETeam.LOCAL);
@@ -291,19 +276,13 @@ export default function Counter() {
           </Button>
           <div className="flex justify-center">
             <Actions
-              setCount={setVisitorCount}
+              setCount={setLocalCount}
               isReset={isReset}
               team={ETeam.LOCAL}
             />
           </div>
         </div>
       </div>
-      <button
-        className="text-[#fff] w-auto py-1 px-2 border-2 h-fit mt-1 mb-2 border-blue-volleytip rounded-md flex text-xl sm:text-2xl mx-auto"
-        onClick={handleReset}
-      >
-        Reiniciar
-      </button>
     </main>
   );
 }
