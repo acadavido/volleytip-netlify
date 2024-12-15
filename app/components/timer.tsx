@@ -3,9 +3,14 @@ import { useState, useEffect } from "react";
 interface TimerProps {
   isTimerActive: boolean;
   setIsTimerActive: (value: boolean) => void;
+  setIsOneTimerActive: (value: boolean) => void;
 }
 
-export function Timer({ isTimerActive, setIsTimerActive }: TimerProps) {
+export function Timer({
+  isTimerActive,
+  setIsTimerActive,
+  setIsOneTimerActive,
+}: TimerProps) {
   const [seconds, setSeconds] = useState(30);
 
   useEffect(() => {
@@ -17,11 +22,12 @@ export function Timer({ isTimerActive, setIsTimerActive }: TimerProps) {
       }, 1000);
     } else if (seconds === 0) {
       setIsTimerActive(false);
+      setIsOneTimerActive(false);
       setSeconds(30);
     }
 
     return () => clearInterval(timerId);
-  }, [isTimerActive, seconds, setIsTimerActive]);
+  }, [isTimerActive, seconds, setIsTimerActive, setIsOneTimerActive]);
 
   return (
     <div className="flex items-center justify-center">

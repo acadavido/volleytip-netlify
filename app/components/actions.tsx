@@ -5,18 +5,25 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@nextui-org/react";
 import { Timer } from "./timer";
-import { useState } from "react";
+import React, { useState } from "react";
 import { ETeam } from "~/dtos/dtos";
 import { getStoredValue, setStoredValues } from "~/utils/utils";
-import React from "react";
 
 interface ActionsProps {
   setCount: (value: (prev: number) => number) => void;
   isReset: boolean;
   team: ETeam;
+  isOneTimerActive: boolean;
+  setIsOneTimerActive: (value: boolean) => void;
 }
 
-export function Actions({ setCount, isReset, team }: ActionsProps) {
+export function Actions({
+  setCount,
+  isReset,
+  team,
+  isOneTimerActive,
+  setIsOneTimerActive,
+}: ActionsProps) {
   const [isTimerActive, setIsTimerActive] = useState<boolean>(false);
   const [isFirstTimerTriggered, setIsFirstTimerTriggered] =
     useState<boolean>(false);
@@ -73,7 +80,7 @@ export function Actions({ setCount, isReset, team }: ActionsProps) {
         <Button
           className="w-1/4 bg-transparent min-w-0"
           isDisabled={isFirstTimerTriggered}
-          disabled={isTimerActive}
+          disabled={isTimerActive || isOneTimerActive}
         >
           <FontAwesomeIcon
             icon={faHourglass}
@@ -81,6 +88,7 @@ export function Actions({ setCount, isReset, team }: ActionsProps) {
             className="w-4 h-4 sm:w-5 sm:h-5 m-auto"
             onClick={() => {
               setIsTimerActive(true);
+              setIsOneTimerActive(true);
               setIsFirstTimerTriggered(true);
             }}
           />
@@ -88,7 +96,7 @@ export function Actions({ setCount, isReset, team }: ActionsProps) {
         <Button
           className="w-1/4 bg-transparent min-w-0"
           isDisabled={isSecondTimerTriggered}
-          disabled={isTimerActive}
+          disabled={isTimerActive || isOneTimerActive}
         >
           <FontAwesomeIcon
             icon={faHourglass}
@@ -96,6 +104,7 @@ export function Actions({ setCount, isReset, team }: ActionsProps) {
             className="w-4 h-4 sm:w-5 sm:h-5 m-auto"
             onClick={() => {
               setIsTimerActive(true);
+              setIsOneTimerActive(true);
               setIsSecondTimerTriggered(true);
             }}
           />
@@ -105,6 +114,7 @@ export function Actions({ setCount, isReset, team }: ActionsProps) {
             <Timer
               isTimerActive={isTimerActive}
               setIsTimerActive={setIsTimerActive}
+              setIsOneTimerActive={setIsOneTimerActive}
             />
           )}
         </div>

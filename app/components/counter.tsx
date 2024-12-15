@@ -21,6 +21,8 @@ export default function Counter() {
 
   const [lastPressed, setLastPressed] = useState<ETeam>();
 
+  const [isOneTimerActive, setIsOneTimerActive] = useState<boolean>(false);
+
   const [isReset, setIsReset] = useState(false);
 
   const [isFinishedBefore, setIsFinishedBefore] = useState<boolean>(false);
@@ -204,6 +206,8 @@ export default function Counter() {
               setCount={setVisitorCount}
               isReset={isReset}
               team={ETeam.VISITOR}
+              isOneTimerActive={isOneTimerActive}
+              setIsOneTimerActive={setIsOneTimerActive}
             />
           </div>
         </div>
@@ -279,6 +283,8 @@ export default function Counter() {
               setCount={setLocalCount}
               isReset={isReset}
               team={ETeam.LOCAL}
+              isOneTimerActive={isOneTimerActive}
+              setIsOneTimerActive={setIsOneTimerActive}
             />
           </div>
         </div>
