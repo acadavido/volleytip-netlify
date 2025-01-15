@@ -1,7 +1,9 @@
-export interface SetDto{
+export interface SetDto {
     local: number;
-    visitor:number
+    visitor: number;
+    isSideSwitched: boolean
 }
+
 
 export enum ETeam {
     LOCAL = "LOCAL",

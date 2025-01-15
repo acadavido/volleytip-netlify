@@ -6,6 +6,8 @@ import { ETeam, SetDto } from "~/dtos/dtos";
 import { Actions } from "~/components/actions";
 import { getStoredValue, setStoredValues } from "~/utils/utils";
 import CustomModal from "./custom-modal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRightArrowLeft } from "@fortawesome/free-solid-svg-icons";
 React.useLayoutEffect = React.useEffect;
 
 export default function Counter() {
@@ -24,6 +26,8 @@ export default function Counter() {
   const [isOneTimerActive, setIsOneTimerActive] = useState<boolean>(false);
 
   const [isReset, setIsReset] = useState(false);
+
+  const [isSideSwitched, setIsSideSwitched] = useState<boolean>(false);
 
   const [isFinishedBefore, setIsFinishedBefore] = useState<boolean>(false);
   const [teamWinnerFinishedBefore, setTeamWinnerFinishedBefore] =
@@ -105,6 +109,7 @@ export default function Counter() {
       {
         local: localCount,
         visitor: visitorCount,
+        isSideSwitched: isSideSwitched,
       },
     ]);
     setVisitorCount(0);
@@ -165,13 +170,26 @@ export default function Counter() {
         alt="Volleytip Icon"
       />
       <button
-        className="fixed  top-3 right-3 text-[#fff] w-auto py-1 px-2 border-2 h-fit mt-1 mb-2 border-blue-volleytip rounded-md flex text-xs mx-auto"
+        className="fixed  top-3 right-3 text-[#fff] w-auto py-1 px-2 border-2 h-fit mt-1 mb-2 border-blue-volleytip rounded-md flex text-md mx-auto"
         onClick={onResetModalOpen}
       >
         Reiniciar
       </button>
       <div className="flex justify-center h-fit mt-10">
-        <div className="text-center min-w-min sm:w-[20%]">
+        <button className="w-10 min-w-0 p-2 rounded-md border-2 border-[#7ffcff] shadow-md hover:shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out flex justify-center items-center text-[#fff]">
+          <FontAwesomeIcon
+            icon={faArrowRightArrowLeft}
+            className="w-4 h-4 sm:w-5 sm:h-5"
+            onClick={() => setIsSideSwitched((prev) => !prev)}
+          />
+        </button>
+      </div>
+      <div className="flex justify-center h-fit mt-10">
+        <div
+          className={`text-center min-w-min sm:w-[20%] ${
+            isSideSwitched ? "order-3" : "order-1"
+          }`}
+        >
           <Tooltip content="Máximo 10 caracteres">
             <input
               className={`text-[#fff] bg-purple-volleytip block text-2xl sm:text-4xl border-none font-medium focus:outline-none text-center w-full
@@ -212,10 +230,12 @@ export default function Counter() {
           </div>
         </div>
 
-        <div className="text-center flex-col justify-center items-center mt-10 ">
+        <div className="text-center flex-col justify-center items-center mt-10 order-2">
           <div className="flex justify-center">
             <button
-              className="text-[#fff] bg-purple-volleytip font-bold text-3xl sm:text-4xl md:text-5xl w-9 sm:w-14 md:w-20 rounded-md shadow hover:bg-blue-600 transition duration-300"
+              className={`text-[#fff] bg-purple-volleytip font-bold text-3xl sm:text-4xl md:text-5xl w-9 sm:w-14 md:w-20 rounded-md shadow hover:bg-blue-600 transition duration-300  ${
+                isSideSwitched ? "order-2" : "order-1"
+              }`}
               onClick={() => {
                 setVisitorSetCount(visitorSetCount + 1);
                 setIsFinishedBefore(true);
@@ -227,7 +247,9 @@ export default function Counter() {
             </button>
 
             <button
-              className="text-[#fff] bg-purple-volleytip font-bold text-3xl sm:text-4xl md:text-5xl w-9 sm:w-14 md:w-20 rounded-md shadow hover:bg-blue-600 transition duration-300"
+              className={`text-[#fff] bg-purple-volleytip font-bold text-3xl sm:text-4xl md:text-5xl w-9 sm:w-14 md:w-20 rounded-md shadow hover:bg-blue-600 transition duration-300 ${
+                isSideSwitched ? "order-1" : "order-2"
+              }`}
               onClick={() => {
                 setLocalSetCount(localSetCount + 1);
                 setIsFinishedBefore(true);
@@ -242,13 +264,22 @@ export default function Counter() {
           <ul>
             {setsFinished.map((set, index) => (
               <li key={index} className="flex justify-center">
-                <Set key={index} local={set.local} visitor={set.visitor} />
+                <Set
+                  key={index}
+                  local={set.local}
+                  visitor={set.visitor}
+                  isSideSwitched={isSideSwitched}
+                />
               </li>
             ))}
           </ul>
         </div>
 
-        <div className="text-center min-w-min sm:w-[20%]">
+        <div
+          className={`text-center min-w-min sm:w-[20%]  ${
+            isSideSwitched ? "order-1" : "order-3"
+          }`}
+        >
           <Tooltip content="Máximo 10 caracteres">
             <input
               className={`text-[#fff] bg-purple-volleytip block text-2xl sm:text-4xl border-none font-medium focus:outline-none text-center w-full
